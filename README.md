@@ -19,14 +19,14 @@ The following **required** functionality is completed:
 
 The following **bonus** features are implemented:
 
-- [ ] User can pull to refresh. (1pt)
-- [ ] User can load past tweets infinitely. (2pts)
+- [x] User can pull to refresh. (1pt)
+- [x] User can load past tweets infinitely. (2pts)
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://g.recordit.co/3IvpvGU4Y6.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='file:///private/var/folders/jg/lnxbz3qd7yl34lskd21cw2rc0000gn/T/0678a20941799f9f6e99269b80df99fd/Kapture%202020-02-17%20at%2011.22.30.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 GIF created with [RecordIt](https://recordit.co/).
 
 ## License
