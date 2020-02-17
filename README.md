@@ -25,7 +25,7 @@ The following **bonus** features are implemented:
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
-![](twitter-1.gif)
+![Twitter Demo](twitter-1.gif)
 
 
 ## License
