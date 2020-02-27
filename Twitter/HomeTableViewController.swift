@@ -9,10 +9,8 @@
 import UIKit
 
 class HomeTableViewController: UITableViewController {
-    
     var tweetArray = [NSDictionary]()
     var numberOfTweet: Int!
-    
     let myRefreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
@@ -21,6 +19,11 @@ class HomeTableViewController: UITableViewController {
         loadTweets()
         myRefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
         tableView.refreshControl = myRefreshControl
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        loadTweets()
     }
     
     @objc func loadTweets() {
@@ -72,12 +75,21 @@ class HomeTableViewController: UITableViewController {
         UserDefaults.standard.set(false, forKey: "userLoggedIn")
     }
     
+    func getRelativeTime(timeString: String) -> String{
+        let time: Date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
+        time = dateFormatter.date(from: timeString)!
+        return time.timeAgoDisplay()
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell", for: indexPath) as! TweetTableViewCell
         let user = tweetArray[indexPath.row]["user"] as! NSDictionary
         
         cell.userNameLabel.text = user["name"] as? String
         cell.tweetContentLabel.text = tweetArray[indexPath.row]["text"] as? String
+        cell.timeLabel.text = getRelativeTime(timeString: (tweetArray[indexPath.row]["created_at"] as? String)!)
         
         let imageUrl = URL(string: (user["profile_image_url_https"] as? String)!)
         let data = try? Data(contentsOf: imageUrl!)
@@ -97,5 +109,33 @@ class HomeTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return tweetArray.count
+    }
+}
+
+extension Date {
+    func timeAgoDisplay() -> String {
+        let secondsAgo = Int(Date().timeIntervalSince(self))
+        let minute = 60
+        let hour = 60 * minute
+        let day = 24 * hour
+        let week = 7 * day
+        if secondsAgo < minute {
+            return String(format: NSLocalizedString("\(secondsAgo) seconds ago", comment: ""), secondsAgo)
+        }
+            
+        else if secondsAgo < hour {
+            let minutes = secondsAgo / minute
+            return minutes == 1 ? NSLocalizedString("1 minute ago", comment: "") : String(format: NSLocalizedString("\(minutes) minutes ago", comment: ""), minutes)
+        }
+        else if secondsAgo < day {
+            let hours = secondsAgo / hour
+            return hours == 1 ? NSLocalizedString("1 hour ago", comment: "") : String(format: NSLocalizedString("\(hours) hours ago", comment: ""), hours)
+        }
+        else if secondsAgo < week {
+            let days = secondsAgo / day
+            return days == 1 ? NSLocalizedString("1 day ago", comment: "") : String(format: NSLocalizedString("\(days) days ago", comment: ""), days)
+        }
+        let weeks = secondsAgo / week
+        return weeks == 1 ? NSLocalizedString("1 week ago", comment: "") :  String(format: NSLocalizedString("\(weeks) weeks ago", comment: ""), weeks)
     }
 }
